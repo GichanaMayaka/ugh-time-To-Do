@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form-wrapper">
+    <h2 class="title">Creating Task for {{ session.get("username").capitalize() }}</h2>
+
+    <form method="post" action="{{ url_for('task.create_task') }}">
+        {{ task.csrf_token() }}
+        <fieldset class="form-field">
+            {{ task.title.label }}
+            {{ task.title }}
+            {% if task.title.errors %}
+            <ul class="errors">
+                {% for error in task.title.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </fieldset>
+
+        <fieldset class="form-field">
+            {{ task.description.label }}
+            {{ task.description }}
+            {% if task.description.errors %}
+            <ul class="errors">
+                {% for error in task.description.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </fieldset>
+
+        <fieldset class="form-field">
+            {{ task.due_date.label }}
+            {{ task.due_date (class = "datepicker") }}
+            {% if task.due_date.errors %}
+            <ul class="errors">
+                {% for error in task.due_date.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </fieldset>
+
+        {{ task.submit }}
+
+    </form>
+</div>
+
+{% endblock %}

@@ -38,7 +38,7 @@ def register():
             except db.IntegrityError:
                 errors = f"User {username.capitalize()} is already registered"
             else:
-                return redirect(url_for("index"))
+                return redirect(url_for("task.create_task"))
         flash(errors)
 
     return render_template("auth/register.html")
@@ -56,21 +56,22 @@ def login():
         ).fetchone()
 
         if user is None:
-            errors = "You are not registered. Please proceed to Login screen"
+            errors = "You are not registered. Please proceed to the Registration screen"
         elif not check_password_hash(user["password"], password):
             errors = "Invalid Password"
 
         if errors is None:
             session.clear()
             session["user_id"] = user["id"]
-            return redirect(url_for("index"))
+            session["username"] = username
+            return redirect(url_for("task.users_tasks"))
 
         flash(errors)
 
     return render_template("auth/login.html")
 
 
-@auth_bp.before_app_request
+@auth_bp.before_app_first_request
 def load_signed_in_user():
     user_id = session.get("user_id")
 
@@ -87,14 +88,14 @@ def load_signed_in_user():
 @auth_bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("index"))
+    return redirect(url_for("auth.login"))
 
 
 def login_required(view):
     # Decorator to ensure one has authenticated to make changes
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if g.user is None:
+        if session.get("user_id") is None:
             return redirect(url_for('auth.login'))
 
         return view(**kwargs)

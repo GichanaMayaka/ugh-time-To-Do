@@ -1,19 +1,20 @@
 {% extends 'base.html' %}
 
+{% block header%}
+    <h2 class="title">Edit Task {{ edit_form.title.data }}</h2>
+{% endblock %}
 {% block content %}
 
 <div class="form-wrapper">
-    <h2 class="title">Edit Task for {{ session.get("username").capitalize() }}</h2>
-
-    <form method="POST" action="{{ url_for('task.create_task') }}">
-        {{ task.csrf_token() }}
+    <form method="POST" action="{{ url_for('task.edit_task', id = edit_form.task_id.data ) }}">
+        {{ edit_form.csrf_token() }}
 
         <fieldset class="form-field">
-            {{ task.title.label }}
-            {{ task.title }}
-            {% if task.title.errors %}
+            {{ edit_form.title.label }}
+            {{ edit_form.title }}
+            {% if edit_form.title.errors %}
             <ul class="errors">
-                {% for error in task.title.errors %}
+                {% for error in edit_form.title.errors %}
                 <li>{{ error }}</li>
                 {% endfor %}
             </ul>
@@ -21,11 +22,11 @@
         </fieldset>
 
         <fieldset class="form-field">
-            {{ task.description.label }}
-            {{ task.description }}
-            {% if task.description.errors %}
+            {{ edit_form.description.label }}
+            {{ edit_form.description }}
+            {% if edit_form.description.errors %}
             <ul class="errors">
-                {% for error in task.description.errors %}
+                {% for error in edit_form.description.errors %}
                 <li>{{ error }}</li>
                 {% endfor %}
             </ul>
@@ -33,18 +34,21 @@
         </fieldset>
 
         <fieldset class="form-field">
-            {{ task.due_date.label }}
-            {{ task.due_date (class = "datepicker") }}
-            {% if task.due_date.errors %}
+            {{ edit_form.due_date.label }}
+            {{ edit_form.due_date (class = "datepicker") }}
+            {% if edit_form.due_date.errors %}
             <ul class="errors">
-                {% for error in task.due_date.errors %}
+                {% for error in edit_form.due_date.errors %}
                 <li>{{ error }}</li>
                 {% endfor %}
             </ul>
             {% endif %}
         </fieldset>
+        <input type="hidden" value="{{ edit_form.task_id.data }}">
+            {{ edit_form.task_id }}
+        </input>
 
-        {{ task.submit }}
+        {{ edit_form.submit }}
 
     </form>
 </div>

@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% block header %}
+    <h2 class="title">Creating Task for {{ session.get("username").capitalize() }}</h2>
+{% endblock %}
 
 {% block content %}
 
 <div class="form-wrapper">
-    <h2 class="title">Creating Task for {{ session.get("username").capitalize() }}</h2>
-
     <form method="post" action="{{ url_for('task.create_task') }}">
         {{ task.csrf_token() }}
         <fieldset class="form-field">
@@ -42,6 +43,7 @@
             </ul>
             {% endif %}
         </fieldset>
+        <input type="hidden" id="user_id" value="{{ session.get('user_id') }}">
 
         {{ task.submit }}
 

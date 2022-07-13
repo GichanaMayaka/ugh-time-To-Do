@@ -4,6 +4,8 @@ autopep8==1.6.0
 click==7.1.2
 distlib==0.3.1
 Django==4.0.5
+dnspython==2.2.1
+email-validator==1.2.1
 et-xmlfile==1.0.1
 Faker==13.15.0
 filelock==3.0.12
@@ -11,6 +13,7 @@ Flask==1.1.2
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==1.0.1
 greenlet==1.1.2
+idna==3.3
 itsdangerous==1.1.0
 Jinja2==2.11.3
 MarkupSafe==1.1.1
